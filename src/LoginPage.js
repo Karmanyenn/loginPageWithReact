@@ -3,20 +3,11 @@ import './Assets/Styles/LoginPage.css'
 import alertify from 'alertifyjs';
 
 export default class LoginPage extends Component {
-    state = { variables: [] }
-
-    componentDidMount() {
-        this.getUsers();
-    }
-    getUsers = (variable) => {
-        fetch('http://localhost:3000/variables')
-            .then(response => response.json())
-            .then(data => this.setState({ variables: data }));
-    }
+    
 
     onSubmitHandle = (event) => {
         event.preventDefault();
-        this.state.variables.forEach(function (variable) {
+        this.props.variables.forEach(function (variable) {
             var valueUser = event.target.elements.userName.value;
             var valueMail = event.target.elements.email.value;
             var valuePassword = event.target.elements.password.value;
@@ -28,9 +19,12 @@ export default class LoginPage extends Component {
             if (valueUser === '') {
                 document.getElementById('emptyUsername').style.display = 'flex';
                 itemUser.style.border = '3px solid red';
+                itemUser.focus();
             }else if (valueMail === '') {
                 document.getElementById('emptyMail').style.display = 'flex';
+                itemMail.focus();
                 itemMail.style.border = '3px solid red';
+                
             } else if ((valueUser === variable.username) && (valueMail === variable.email) && (valuePassword === variable.password)) {
                 itemUser.style.border = '3px solid green';
                 itemMail.style.border = '3px solid green';
@@ -51,6 +45,11 @@ export default class LoginPage extends Component {
                 itemPassword.style.border = '3px solid red';
             }else if (valuePassword.length < 8) {
                 document.getElementById('pswText').style.display = 'flex';
+                itemPassword.focus();
+                itemPassword.style.border = '3px solid red';
+            }else{
+                itemUser.style.border = '3px solid red';
+                itemMail.style.border = '3px solid red';
                 itemPassword.style.border = '3px solid red';
             }
         });
@@ -91,7 +90,7 @@ export default class LoginPage extends Component {
                         <h6 id='pswText'>{this.props.loginTitles.pswLetter}</h6>
 
 
-                        <input onClick={this.onClikHandle} className='submit' type="submit" value="Giriş"></input>
+                        <input onClick={this.onClikHandle} className='submit' type="submit" value="Giriş Yap"></input>
                         <div className='loginText2'>
                             <h3>Hesabın Yok mu?</h3>
                             <a href='/'> Kayıt Ol </a>
